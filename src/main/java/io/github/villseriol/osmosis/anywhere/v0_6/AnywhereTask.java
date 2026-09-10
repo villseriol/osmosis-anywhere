@@ -2,7 +2,6 @@
 package io.github.villseriol.osmosis.anywhere.v0_6;
 
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.openstreetmap.osmosis.core.OsmosisRuntimeException;
 import org.openstreetmap.osmosis.core.container.v0_6.BoundContainer;
@@ -15,7 +14,7 @@ import org.openstreetmap.osmosis.core.task.v0_6.SinkSource;
 
 
 public class AnywhereTask implements SinkSource {
-    private static final Logger LOG = Logger.getLogger(AnywhereTask.class.getName());
+    private static final double MAX_LONGITUDE = 180;
 
     // Largest offsets that can still map a valid coordinate onto another valid
     // coordinate: latitude spans [-90, 90] and longitude spans [-180, 180].
@@ -38,48 +37,12 @@ public class AnywhereTask implements SinkSource {
             throw new OsmosisRuntimeException("Offset \"" + offset + "\" must be in the form \"lat,lon\".");
         }
 
-        latitudeOffset = parseCoordinate(parts[0], "latitude", offset, MAX_LATITUDE_OFFSET);
-        longitudeOffset = parseCoordinate(parts[1], "longitude", offset, MAX_LONGITUDE_OFFSET);
-    }
-
-
-    private static double parseCoordinate(String value, String name, String offset, double limit) {
-        double result;
         try {
-            result = Double.parseDouble(value.trim());
-        } catch (NumberFormatException e) {
-            throw new OsmosisRuntimeException("Offset \"" + offset + "\" has an invalid " + name + ".", e);
+            latitudeOffset = AnywhereTaskUtils.tryParseCoordinate(parts[0], MAX_LATITUDE_OFFSET);
+            longitudeOffset = AnywhereTaskUtils.tryParseCoordinate(parts[1], MAX_LONGITUDE_OFFSET);
+        } catch (IllegalArgumentException e) {
+            throw new OsmosisRuntimeException("Offset \"" + offset + "\" is invalid: " + e.getMessage(), e);
         }
-
-        if (!Double.isFinite(result)) {
-            throw new OsmosisRuntimeException("Offset \"" + offset + "\" has a non-finite " + name + ".");
-        }
-
-        if (Math.abs(result) > limit) {
-            throw new OsmosisRuntimeException(
-                    "Offset \"" + offset + "\" has a " + name + " outside the range [-" + limit + ", " + limit + "].");
-        }
-
-        return result;
-    }
-
-
-    private static double wrapLongitude(double longitude) {
-        // Return in-range values untouched; the modulo arithmetic below can
-        // introduce floating point noise even when no wrap is needed.
-        if (longitude >= -180 && longitude <= 180) {
-            return longitude;
-        }
-
-        double wrapped = ((longitude + 180) % 360 + 360) % 360 - 180;
-        // Keep 180 as 180 rather than flipping it to -180.
-        if (wrapped == -180 && longitude > 0) {
-            wrapped = 180;
-        }
-
-        LOG.warning("Longitude " + longitude + " is outside [-180, 180] and was wrapped to " + wrapped + ".");
-
-        return wrapped;
     }
 
 
@@ -98,8 +61,8 @@ public class AnywhereTask implements SinkSource {
         // A box spanning every longitude would collapse to zero width if both
         // edges wrapped to the same value, so leave it as is.
         if (right - left < 360) {
-            left = wrapLongitude(left + longitudeOffset);
-            right = wrapLongitude(right + longitudeOffset);
+            left = AnywhereTaskUtils.clampCoordinate(left + longitudeOffset, MAX_LONGITUDE);
+            right = AnywhereTaskUtils.clampCoordinate(right + longitudeOffset, MAX_LONGITUDE);
         }
 
         return new Bound(right, left, top, bottom, bound.getOrigin());
@@ -131,7 +94,7 @@ public class AnywhereTask implements SinkSource {
         }
 
         node.setLatitude(latitude);
-        node.setLongitude(wrapLongitude(node.getLongitude() + longitudeOffset));
+        node.setLongitude(AnywhereTaskUtils.clampCoordinate(node.getLongitude() + longitudeOffset, MAX_LONGITUDE));
 
         sink.process(writeableContainer);
     }
