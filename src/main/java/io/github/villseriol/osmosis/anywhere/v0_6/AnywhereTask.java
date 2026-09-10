@@ -2,6 +2,7 @@
 package io.github.villseriol.osmosis.anywhere.v0_6;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.openstreetmap.osmosis.core.OsmosisRuntimeException;
 import org.openstreetmap.osmosis.core.container.v0_6.BoundContainer;
@@ -14,6 +15,8 @@ import org.openstreetmap.osmosis.core.task.v0_6.SinkSource;
 
 
 public class AnywhereTask implements SinkSource {
+    private static final Logger LOG = Logger.getLogger(AnywhereTask.class.getName());
+
     // Largest offsets that can still map a valid coordinate onto another valid
     // coordinate: latitude spans [-90, 90] and longitude spans [-180, 180].
     private static final double MAX_LATITUDE_OFFSET = 180;
@@ -62,11 +65,19 @@ public class AnywhereTask implements SinkSource {
 
 
     private static double wrapLongitude(double longitude) {
+        // Return in-range values untouched; the modulo arithmetic below can
+        // introduce floating point noise even when no wrap is needed.
+        if (longitude >= -180 && longitude <= 180) {
+            return longitude;
+        }
+
         double wrapped = ((longitude + 180) % 360 + 360) % 360 - 180;
         // Keep 180 as 180 rather than flipping it to -180.
         if (wrapped == -180 && longitude > 0) {
-            return 180;
+            wrapped = 180;
         }
+
+        LOG.warning("Longitude " + longitude + " is outside [-180, 180] and was wrapped to " + wrapped + ".");
 
         return wrapped;
     }
