@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.1.0 (2942769 spike-08.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <way id="314801510" visible="true" version="4" changeset="186198899" timestamp="2026-07-22T20:20:29Z" user="geomaster01" uid="24232512">
+  <nd ref="3208430229"/>
+  <nd ref="3208430230"/>
+  <nd ref="3208430231"/>
+  <nd ref="3208430232"/>
+  <nd ref="13360883262"/>
+  <nd ref="13360883261"/>
+  <nd ref="3208430233"/>
+  <nd ref="13360883260"/>
+  <nd ref="3208430234"/>
+  <nd ref="3208430235"/>
+  <nd ref="3208430236"/>
+  <nd ref="3208430237"/>
+  <nd ref="3208430229"/>
+  <tag k="addr:city" v="徳島市"/>
+  <tag k="addr:housenumber" v="131"/>
+  <tag k="addr:postcode" v="779-3131"/>
+  <tag k="addr:street" v="下町本丁"/>
+  <tag k="amenity" v="school"/>
+  <tag k="education" v="school"/>
+  <tag k="name" v="徳島市上八万中学校"/>
+  <tag k="phone" v="+81 88 644 0050"/>
+  <tag k="wikidata" v="Q11489739"/>
+ </way>
+</osm>

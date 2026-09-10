@@ -5,12 +5,12 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>io.github.villseriol</groupId>
-  <artifactId>osmosis-example</artifactId>
-  <description>A template for initializing a project for building an osmosis plugin.</description>
+  <artifactId>osmosis-anywhere</artifactId>
+  <description>Transform OpenStreetMap coordinates anywhere you want.</description>
   <packaging>jar</packaging>
   <version>1.0.0</version>
 
-  <name>osmosis-example</name>
+  <name>osmosis-anywhere</name>
   <url>http://www.example.com</url>
 
   <properties>

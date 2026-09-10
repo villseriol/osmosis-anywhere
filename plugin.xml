@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE plugin PUBLIC "-//JPF//Java Plug-in Manifest 1.0" "http://jpf.sourceforge.net/plugin_1_0.dtd">
-<plugin id="ExamplePlugin" version="${project.version}">
+<plugin id="AnywherePlugin" version="${project.version}">
     <requires>
         <import plugin-id="org.openstreetmap.osmosis.core.plugin.Core"
             plugin-version="${osmosis.version}"
@@ -13,8 +13,8 @@
     </runtime>
 
     <extension plugin-id="org.openstreetmap.osmosis.core.plugin.Core"
-        point-id="Task" id="example">
-        <parameter id="name" value="example" />
-        <parameter id="class" value="io.github.villseriol.osmosis.example.ExamplePluginLoader" />
+        point-id="Task" id="anywhere">
+        <parameter id="name" value="anywhere" />
+        <parameter id="class" value="io.github.villseriol.osmosis.anywhere.AnywherePluginLoader" />
     </extension>
 </plugin>

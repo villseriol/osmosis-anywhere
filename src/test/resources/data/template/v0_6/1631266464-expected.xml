@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<osm version="0.6" generator="Osmosis %VERSION%">
+  <node id="1631266464" version="2" timestamp="2026-06-26T11:05:27Z" uid="7130304" user="gc27" changeset="184639759" lat="44.03612" lon="154.485769">
+    <tag k="amenity" v="social_facility"/>
+    <tag k="KSJ2:AdminArea" v="徳島県徳島市"/>
+    <tag k="KSJ2:ADS" v="下町本丁61-9"/>
+    <tag k="name" v="ケアハウスやまもも"/>
+    <tag k="note" v="National-Land Numerical Information (Public Facility) 2006, MLIT Japan"/>
+    <tag k="note:ja" v="国土数値情報（公共施設データ）平成19年　国土交通省"/>
+    <tag k="operator:type" v="private"/>
+    <tag k="social_facility" v="group_home"/>
+    <tag k="source" v="KSJ2"/>
+    <tag k="source_ref" v="http://nlftp.mlit.go.jp/ksj/jpgis/datalist/KsjTmplt-P02-v2_0.html"/>
+  </node>
+</osm>
