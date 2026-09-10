@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE plugin PUBLIC "-//JPF//Java Plug-in Manifest 1.0" "http://jpf.sourceforge.net/plugin_1_0.dtd">
+<plugin id="ExamplePlugin" version="${project.version}">
+    <requires>
+        <import plugin-id="org.openstreetmap.osmosis.core.plugin.Core"
+            plugin-version="${osmosis.version}"
+            reverse-lookup="false" />
+    </requires>
+    <runtime>
+        <library id="core" path="classes/" type="code" version="${project.version}">
+            <export prefix="*" />
+        </library>
+    </runtime>
+
+    <extension plugin-id="org.openstreetmap.osmosis.core.plugin.Core"
+        point-id="Task" id="example">
+        <parameter id="name" value="example" />
+        <parameter id="class" value="io.github.villseriol.osmosis.example.ExamplePluginLoader" />
+    </extension>
+</plugin>
