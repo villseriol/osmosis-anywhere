@@ -2,6 +2,15 @@
 
 This plugin transforms coordinates in OpenStreetMap data by any user-designated amount.
 
+## Usage
+
+```bash
+osmosis \
+    --read-empty \
+    --oss-anywhere offset="<lat>,<lon>" \
+    --write-null
+```
+
 ## Examples
 
 The following are illustrations of how the plugin handles coordinate transforms. For all
