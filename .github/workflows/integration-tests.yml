@@ -1,0 +1,41 @@
+name: Integration Tests
+on: [pull_request]
+jobs:
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+
+      - name: Package
+        run: mvn clean package
+
+      - name: Get Final Artifact Name
+        id: get-final-name
+        run: |
+          FINAL_NAME=$(mvn help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)
+
+          echo "final_name=$FINAL_NAME" >> $GITHUB_OUTPUT
+
+      - name: Install Osmosis
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y osmosis
+
+      - name: Install Plugin
+        run: |
+          mkdir -p ~/.openstreetmap/osmosis/plugins
+          cp target/${{ steps.get-final-name.outputs.final_name }}-plugin.zip \
+            ~/.openstreetmap/osmosis/plugins
+
+      - name: Verify Plugin Loads
+        run: osmosis --read-empty --oss-tl-version-0.6

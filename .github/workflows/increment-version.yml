@@ -1,0 +1,82 @@
+name: Increment Version
+on:
+  workflow_dispatch:
+    inputs:
+      segment:
+        description: Which semantic version segment to increment
+        required: true
+        default: patch
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+  workflow_call:
+    inputs:
+      segment:
+        description: Which semantic version segment to increment
+        required: false
+        default: patch
+        type: string
+permissions:
+  contents: write
+jobs:
+  increment-version:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+      - name: Resolve Next Version
+        id: resolve-version
+        env:
+          SEGMENT: ${{ inputs.segment }}
+        run: |
+          CURRENT=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+          if ! [[ "$CURRENT" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+            echo "Current version '$CURRENT' is not a plain MAJOR.MINOR.PATCH version." >&2
+            exit 1
+          fi
+
+          MAJOR=${BASH_REMATCH[1]}
+          MINOR=${BASH_REMATCH[2]}
+          PATCH=${BASH_REMATCH[3]}
+
+          case "$SEGMENT" in
+            major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+            minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
+            patch) PATCH=$((PATCH + 1)) ;;
+            *) echo "Unknown segment '$SEGMENT'." >&2; exit 1 ;;
+          esac
+
+          NEXT="$MAJOR.$MINOR.$PATCH"
+
+          echo "Incrementing $SEGMENT: $CURRENT -> $NEXT"
+          echo "current=$CURRENT" >> $GITHUB_OUTPUT
+          echo "next=$NEXT" >> $GITHUB_OUTPUT
+      - name: Set Version
+        env:
+          NEXT: ${{ steps.resolve-version.outputs.next }}
+        run: mvn versions:set -DnewVersion="$NEXT" -DgenerateBackupPoms=false
+      - name: Commit and Push
+        env:
+          CURRENT: ${{ steps.resolve-version.outputs.current }}
+          NEXT: ${{ steps.resolve-version.outputs.next }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          if git diff --quiet -- pom.xml; then
+            echo "pom.xml is unchanged; nothing to push." >&2
+            exit 1
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add pom.xml
+          git commit -m "Increment version from $CURRENT to $NEXT"
+          git push origin "HEAD:refs/heads/$BRANCH"

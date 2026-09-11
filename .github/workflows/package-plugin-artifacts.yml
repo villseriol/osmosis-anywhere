@@ -1,0 +1,35 @@
+name: Package Plugin Artifacts
+on:
+  workflow_dispatch:
+  workflow_call:
+permissions:
+  contents: read
+jobs:
+  package-artifacts:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: maven
+      - name: Package
+        run: mvn clean package
+      - name: Get Final Artifact Names
+        id: get-final-name
+        run: |
+          FINAL_NAME=$(mvn help:evaluate -Dexpression=project.build.finalName -q -DforceStdout)
+
+          echo "final_name=$FINAL_NAME" >> $GITHUB_OUTPUT
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: osmosis-reports-artifacts
+          path: |
+            target/${{ steps.get-final-name.outputs.final_name }}.jar
+            target/${{ steps.get-final-name.outputs.final_name }}-plugin.zip
