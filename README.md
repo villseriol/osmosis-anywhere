@@ -17,6 +17,27 @@ transformed to an area inside the limits.
 
 ![Coordinate (34°, 135°) and its bounds shifted to (-32°, 116°), both still inside the limits](images/bounds-within.png)
 
+### Transformed Coordinate & Bounds Exceeding Longitude Limits
+
+The node (and its bounds) has been transformed so the longitude exceeds +180 degrees and wraps
+around to the opposite side.
+
+![Coordinate transformed to (-34°, 190°), past the 180° limit, wrapping around to (-34°, -170°)](images/bounds-over-edge.png)
+
+### Transformed Coordinate Inside Limits But Bounds Exceed Latitude
+
+While the transformed node in this example is inside the limits, its bounds can be seen to exceed
+them. In this case, the bounds are clipped to the max latitude and **do not wrap around**.
+
+![Coordinate transformed from (34°, 135°) to (85°, 70°), inside the limits, with its bounds extending past 90° and clipped at the edge](images/bounds-latitude-within.png)
+
+### Transformed Coordinate Outside Latitude Limits
+
+This is an error condition. A transformed coordinate that lies outside of the latitude limits will
+result in a runtime error.
+
+![Coordinate transformed from (34°, 135°) to (100°, 70°), marked with an x because it lies above the 90° latitude limit, with its bounds shown in blue clipped at the limit](images/bounds-latitude-invalid.png)
+
 ## Disclaimer
 
 ## License

@@ -112,6 +112,7 @@ type PointStyle = {
     shifted?: boolean
     labelSide?: 'left' | 'right'
     labelOffset?: number
+    marker?: 'dot' | 'x'
 }
 
 export function squareAround({ latitude, longitude }: Coordinate): Box {
@@ -217,17 +218,33 @@ export function drawPoint(
         shifted = false,
         labelSide = 'left',
         labelOffset = 0,
+        marker = 'dot',
     }: PointStyle = {}
 ) {
     const { latitude, longitude } = coordinate
 
     drawBoxes({ svg, x, y }, boxes, { color, shifted })
 
-    svg.append('circle')
-        .attr('cx', x(longitude))
-        .attr('cy', y(latitude))
-        .attr('r', 3)
-        .attr('fill', color)
+    if (marker === 'x') {
+        const cx = x(longitude)
+        const cy = y(latitude)
+        const arm = 4
+        svg.append('path')
+            .attr(
+                'd',
+                `M${cx - arm},${cy - arm}L${cx + arm},${cy + arm}` +
+                    `M${cx - arm},${cy + arm}L${cx + arm},${cy - arm}`
+            )
+            .attr('stroke', color)
+            .attr('stroke-width', 2)
+            .attr('stroke-linecap', 'round')
+    } else {
+        svg.append('circle')
+            .attr('cx', x(longitude))
+            .attr('cy', y(latitude))
+            .attr('r', 3)
+            .attr('fill', color)
+    }
 
     const labelBox = boxes.find(
         (box) => box.west <= longitude && longitude <= box.east
