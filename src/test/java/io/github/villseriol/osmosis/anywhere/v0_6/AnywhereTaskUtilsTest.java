@@ -10,10 +10,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     private static final double LIMIT = 180;
     private static final double DELTA = 1e-9;
 
-    /**
-     * Values already in range are returned exactly, with no floating point
-     * noise from the wrapping arithmetic.
-     */
     @Test
     public void clampCoordinateLeavesInRangeValuesUnchanged() {
         Assert.assertEquals(0, AnywhereTaskUtils.clampCoordinate(0, LIMIT), 0);
@@ -22,9 +18,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * Both edges of the range are in range and are kept as they are.
-     */
     @Test
     public void clampCoordinateKeepsEdges() {
         Assert.assertEquals(180, AnywhereTaskUtils.clampCoordinate(180, LIMIT), 0);
@@ -32,9 +25,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * Values just past either edge wrap around to the other side.
-     */
     @Test
     public void clampCoordinateWrapsPastEdges() {
         Assert.assertEquals(-170, AnywhereTaskUtils.clampCoordinate(190, LIMIT), DELTA);
@@ -42,9 +32,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * Values more than one period out of range wrap all the way back.
-     */
     @Test
     public void clampCoordinateWrapsMultiplePeriods() {
         Assert.assertEquals(0, AnywhereTaskUtils.clampCoordinate(360, LIMIT), DELTA);
@@ -54,10 +41,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * A value that wraps exactly onto an edge lands on the edge it came from,
-     * so positive values end at +limit rather than flipping to -limit.
-     */
     @Test
     public void clampCoordinateLandsOnSameSignEdge() {
         Assert.assertEquals(180, AnywhereTaskUtils.clampCoordinate(540, LIMIT), 0);
@@ -65,9 +48,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * The limit sets both the range and the period.
-     */
     @Test
     public void clampCoordinateUsesLimit() {
         Assert.assertEquals(-80, AnywhereTaskUtils.clampCoordinate(100, 90), DELTA);
@@ -76,9 +56,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * Plain, negative and decimal numbers within the limit are parsed as is.
-     */
     @Test
     public void tryParseCoordinateParsesValidValues() {
         Assert.assertEquals(0, AnywhereTaskUtils.tryParseCoordinate("0", LIMIT), 0);
@@ -88,9 +65,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * Surrounding whitespace is ignored, so "lat, lon" style offsets work.
-     */
     @Test
     public void tryParseCoordinateTrimsWhitespace() {
         Assert.assertEquals(5, AnywhereTaskUtils.tryParseCoordinate(" 5 ", LIMIT), 0);
@@ -98,9 +72,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * Values exactly at either limit are accepted.
-     */
     @Test
     public void tryParseCoordinateAcceptsLimits() {
         Assert.assertEquals(180, AnywhereTaskUtils.tryParseCoordinate("180", LIMIT), 0);
@@ -108,9 +79,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * Text that is not a number is rejected with a NumberFormatException.
-     */
     @Test
     public void tryParseCoordinateRejectsNonNumbers() {
         assertRejected("abc", NumberFormatException.class);
@@ -120,9 +88,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * NaN and infinities parse as doubles but are rejected as coordinates.
-     */
     @Test
     public void tryParseCoordinateRejectsNonFiniteValues() {
         assertRejected("NaN", IllegalArgumentException.class);
@@ -131,9 +96,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * Values past either limit are rejected.
-     */
     @Test
     public void tryParseCoordinateRejectsOutOfRangeValues() {
         assertRejected("180.0000001", IllegalArgumentException.class);
@@ -142,9 +104,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * The limit argument sets the accepted range.
-     */
     @Test
     public void tryParseCoordinateUsesLimit() {
         Assert.assertEquals(90, AnywhereTaskUtils.tryParseCoordinate("90", 90), 0);
@@ -157,11 +116,6 @@ public class AnywhereTaskUtilsTest extends AbstractDataTest {
     }
 
 
-    /**
-     * Asserts that parsing a value against LIMIT throws exactly the given
-     * exception type. An exact match is used because NumberFormatException is a
-     * subclass of IllegalArgumentException.
-     */
     private static void assertRejected(String value, Class<? extends IllegalArgumentException> expected) {
         try {
             AnywhereTaskUtils.tryParseCoordinate(value, LIMIT);

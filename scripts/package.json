@@ -1,0 +1,44 @@
+{
+  "name": "@villseriol/osmosis-anywhere",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [
+    "osmosis"
+  ],
+  "author": "EY4180",
+  "type": "module",
+  "engines": {
+    "node": ">=26"
+  },
+  "engineStrict": true,
+  "main": "index.js",
+  "scripts": {
+    "generate:bounds-clamp": "tsx src/generate-bounds-clamp.ts ../images/bounds-clamp.png",
+    "generate:bounds-within": "tsx src/generate-bounds-within.ts ../images/bounds-within.png",
+    "generate:bounds-over-edge": "tsx src/generate-bounds-over-edge.ts ../images/bounds-over-edge.png",
+    "generate:bounds-latitude-within": "tsx src/generate-bounds-latitude-within.ts ../images/bounds-latitude-within.png",
+    "generate:bounds-latitude-invalid": "tsx src/generate-bounds-latitude-invalid.ts ../images/bounds-latitude-invalid.png",
+    "generate:bounds-full-width": "tsx src/generate-bounds-full-width.ts ../images/bounds-full-width.png"
+  },
+  "dependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "d3-array": "^3.2.4",
+    "d3-axis": "^3.0.0",
+    "d3-scale": "^4.0.2",
+    "d3-selection": "^3.0.0",
+    "d3-shape": "^3.2.0",
+    "linkedom": "^0.18.13",
+    "tsx": "^4.23.13"
+  },
+  "devDependencies": {
+    "@types/d3-array": "^3.2.2",
+    "@types/d3-axis": "^3.0.6",
+    "@types/d3-scale": "^4.0.9",
+    "@types/d3-selection": "^3.0.11",
+    "@types/d3-shape": "^3.2.0",
+    "@types/node": "^26.5.1",
+    "prettier": "^3.9.6",
+    "typescript": "^7.0.2"
+  },
+  "private": true
+}
