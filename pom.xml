@@ -11,7 +11,7 @@
   <version>1.0.0</version>
 
   <name>osmosis-anywhere</name>
-  <url>http://www.example.com</url>
+  <url>https://www.villseriol.org</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

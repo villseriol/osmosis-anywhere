@@ -38,7 +38,12 @@ result in a runtime error.
 
 ![Coordinate transformed from (34°, 135°) to (100°, 70°), marked with an x because it lies above the 90° latitude limit, with its bounds shown in blue clipped at the limit](images/bounds-latitude-invalid.png)
 
-## Disclaimer
+### Original Bounds Spanned The Entire World
+
+When the bounds of a node span the full +-180 degree longitude, no transformation occurs on the
+latitude values of the bounds.
+
+![Full-width bounds spanning every longitude, keeping their ±180° edges while the coordinate moves from (34°, 135°) to (-34°, 190°), wrapping to (-34°, -170°)](images/bounds-full-width.png)
 
 ## License
 
