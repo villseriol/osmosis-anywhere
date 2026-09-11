@@ -1,6 +1,10 @@
 # Osmosis Anywhere
 
-This plugin transforms coordinates in OpenStreetMap data by any user-designated amount.
+This plugin transforms coordinates in OpenStreetMap data by any user-designated amount. The main
+purpose of this plugin is to enable end-to-end testing on areas of the world that are not accessible
+by the developer.
+
+For example, testing map-products of Japan while living in another country.
 
 ## Usage
 
