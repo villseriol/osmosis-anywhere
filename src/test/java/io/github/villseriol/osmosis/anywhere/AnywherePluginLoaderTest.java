@@ -51,7 +51,8 @@ public class AnywherePluginLoaderTest extends AbstractDataTest {
             "--read-xml-0.6",
             input.getPath(),
             "--oss-anywhere-0.6",
-            "offset=10,20",
+            "src=0,0",
+            "dest=0,90",
             "--write-xml-0.6",
             actual.getPath() });
         // @formatter:on
@@ -62,7 +63,7 @@ public class AnywherePluginLoaderTest extends AbstractDataTest {
 
     /**
      * Transforms node 1631266464 at (34.0361200, 134.4857690) and verifies that
-     * it is written out shifted by the offset, matching
+     * it is written out rotated 90 degrees east, matching
      * 1631266464-expected.xml.
      *
      * @throws IOException if the output files cannot be compared.
@@ -82,7 +83,8 @@ public class AnywherePluginLoaderTest extends AbstractDataTest {
             "--read-xml-0.6",
             input.getPath(),
             "--oss-anywhere-0.6",
-            "offset=10,20",
+            "src=0,0",
+            "dest=0,90",
             "--write-xml-0.6",
             output.getPath() });
         // @formatter:on

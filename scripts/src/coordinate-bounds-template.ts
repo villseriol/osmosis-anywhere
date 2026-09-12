@@ -143,6 +143,10 @@ export function clampLatitude({ latitude, longitude }: Coordinate): Coordinate {
     return { latitude: clamp(latitude, MAX_LATITUDE), longitude }
 }
 
+export function wrapLatitude({ latitude, longitude }: Coordinate): Coordinate {
+    return { latitude: wrap(latitude, MAX_LATITUDE), longitude }
+}
+
 export function wrapCoordinate({
     latitude,
     longitude,
