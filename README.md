@@ -11,9 +11,17 @@ For example, testing map-products of Japan while living in another country.
 ```bash
 osmosis \
     --read-empty \
-    --oss-anywhere offset="<lat>,<lon>" \
+    --oss-anywhere src="<lat>,<lon>" dest="<lat>,<lon>" \
     --write-null
 ```
+
+## Math
+
+> [!NOTE]
+>
+> Version 1.0.0 of this plugin added or subtracted a constant longitude/latitude value from every
+> node/bound. Version 2.0.0 uses spherical rotation using linear algebra instead which preserves
+> distances between points.
 
 ## Examples
 

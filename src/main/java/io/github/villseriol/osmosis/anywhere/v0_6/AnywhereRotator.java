@@ -9,13 +9,13 @@ import org.openstreetmap.osmosis.core.domain.v0_6.Bound;
 import org.openstreetmap.osmosis.core.domain.v0_6.Node;
 
 
-public class OsmosisRotator {
+public class AnywhereRotator {
     private static final double MAX_LATITUDE = 90;
     private static final double MAX_LONGITUDE = 180;
 
     private final Rotation rotation;
 
-    public OsmosisRotator(final double sourceLatitude, final double sourceLongitude, final double destinationLatitude,
+    public AnywhereRotator(final double sourceLatitude, final double sourceLongitude, final double destinationLatitude,
             final double destinationLongitude) {
         rotation = new Rotation(new Vector3D(Math.toRadians(sourceLongitude), Math.toRadians(sourceLatitude)),
                 new Vector3D(Math.toRadians(destinationLongitude), Math.toRadians(destinationLatitude)));

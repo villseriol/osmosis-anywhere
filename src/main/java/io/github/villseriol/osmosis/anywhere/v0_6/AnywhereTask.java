@@ -13,9 +13,9 @@ import org.openstreetmap.osmosis.core.task.v0_6.SinkSource;
 
 public class AnywhereTask implements SinkSource {
     private Sink sink;
-    private final OsmosisCoordinate source;
-    private final OsmosisCoordinate destination;
-    private OsmosisRotator rotator;
+    private final AnywhereCoordinate source;
+    private final AnywhereCoordinate destination;
+    private AnywhereRotator rotator;
 
     /**
      * Creates a new instance.
@@ -25,14 +25,14 @@ public class AnywhereTask implements SinkSource {
      */
     public AnywhereTask(final String src, final String dest) {
         try {
-            source = new OsmosisCoordinate(src);
+            source = new AnywhereCoordinate(src);
             source.validate();
         } catch (IllegalArgumentException e) {
             throw new OsmosisRuntimeException("Argument src \"" + src + "\" is invalid: " + e.getMessage(), e);
         }
 
         try {
-            destination = new OsmosisCoordinate(dest);
+            destination = new AnywhereCoordinate(dest);
             destination.validate();
         } catch (IllegalArgumentException e) {
             throw new OsmosisRuntimeException("Argument dest \"" + dest + "\" is invalid: " + e.getMessage(), e);
@@ -64,7 +64,7 @@ public class AnywhereTask implements SinkSource {
      */
     @Override
     public void initialize(Map<String, Object> metaData) {
-        rotator = new OsmosisRotator(source.getLatitude(), source.getLongitude(), destination.getLatitude(),
+        rotator = new AnywhereRotator(source.getLatitude(), source.getLongitude(), destination.getLatitude(),
                 destination.getLongitude());
 
         sink.initialize(metaData);
