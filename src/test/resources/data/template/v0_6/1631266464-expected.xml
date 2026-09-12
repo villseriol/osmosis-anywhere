@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <osm version="0.6" generator="Osmosis %VERSION%">
-  <node id="1631266464" version="2" timestamp="2026-06-26T11:05:27Z" uid="7130304" user="gc27" changeset="184639759" lat="44.03612" lon="154.485769">
+  <node id="1631266464" version="2" timestamp="2026-06-26T11:05:27Z" uid="7130304" user="gc27" changeset="184639759" lat="34.03612" lon="-135.514231">
     <tag k="amenity" v="social_facility"/>
     <tag k="KSJ2:AdminArea" v="徳島県徳島市"/>
     <tag k="KSJ2:ADS" v="下町本丁61-9"/>

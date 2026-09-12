@@ -10,8 +10,9 @@ import org.openstreetmap.osmosis.core.pipeline.v0_6.SinkSourceManager;
 public class AnywhereTaskFactory extends TaskManagerFactory {
     @Override
     protected TaskManager createTaskManagerImpl(TaskConfiguration taskConfig) {
-        String offset = getStringArgument(taskConfig, "offset", getDefaultStringArgument(taskConfig, "0,0"));
+        String src = getStringArgument(taskConfig, "src", getDefaultStringArgument(taskConfig, "0,0"));
+        String dest = getStringArgument(taskConfig, "dest", "0,0");
 
-        return new SinkSourceManager(taskConfig.getId(), new AnywhereTask(offset), taskConfig.getPipeArgs());
+        return new SinkSourceManager(taskConfig.getId(), new AnywhereTask(src, dest), taskConfig.getPipeArgs());
     }
 }

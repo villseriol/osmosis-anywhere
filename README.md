@@ -1,9 +1,7 @@
 # Osmosis Anywhere
 
-This plugin transforms coordinates in OpenStreetMap data by any user-designated amount. The main
-purpose of this plugin is to enable end-to-end testing on areas of the world that are not accessible
-by the developer.
-
+This plugin transforms coordinates in OpenStreetMap data by any user-designated amount. Consider
+this as a development for end-to-end testing on regions that are not accessible by the developer.
 For example, testing map-products of Japan while living in another country.
 
 ## Usage
@@ -11,9 +9,17 @@ For example, testing map-products of Japan while living in another country.
 ```bash
 osmosis \
     --read-empty \
-    --oss-anywhere offset="<lat>,<lon>" \
+    --oss-anywhere src="<lat>,<lon>" dest="<lat>,<lon>" \
     --write-null
 ```
+
+## Math
+
+> [!NOTE]
+>
+> Version 1.0.0 of this plugin added or subtracted a constant longitude/latitude value from every
+> node/bound. Version 2.0.0 uses spherical rotation using linear algebra instead which preserves
+> distances between points.
 
 ## Examples
 
@@ -42,14 +48,14 @@ around to the opposite side.
 While the transformed node in this example is inside the limits, its bounds can be seen to exceed
 them. In this case, the bounds are clipped to the max latitude and **do not wrap around**.
 
-![Coordinate transformed from (34°, 135°) to (85°, 70°), inside the limits, with its bounds extending past 90° and clipped at the edge](images/bounds-latitude-within.png)
+![Coordinate transformed from (34°, 135°) to (85°, 70°), inside the limits, with the part of its bounds past 90° wrapping around to the bottom](images/bounds-latitude-within.png)
 
 ### Transformed Coordinate Outside Latitude Limits
 
 This is an error condition. A transformed coordinate that lies outside of the latitude limits will
 result in a runtime error.
 
-![Coordinate transformed from (34°, 135°) to (100°, 70°), marked with an x because it lies above the 90° latitude limit, with its bounds shown in blue clipped at the limit](images/bounds-latitude-invalid.png)
+![Coordinate transformed from (34°, 135°) to (100°, 70°), above the 90° latitude limit, wrapping around to (-80°, 70°) in blue with the overflowing part of its bounds reappearing at the bottom](images/bounds-latitude-invalid.png)
 
 ### Original Bounds Spanned The Entire World
 
